@@ -50,18 +50,37 @@
         </div>
     </div>
     
-    <div class="map-card">
+    <div class="map-card" style="margin-top: 2rem;">
         <div class="map-header">🗺️ Расположение на карте Барнаула</div>
-        <div id="objectMap" style="height: 400px;"></div>
+        <div id="objectMap" style="height: 400px; width: 100%; border-radius: 0 0 12px 12px;"></div>
     </div>
 </div>
 
 <script>
-    const map = L.map('objectMap').setView([<%= object.latitude %>, <%= object.longitude %>], 15);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
-    }).addTo(map);
-    L.marker([<%= object.latitude %>, <%= object.longitude %>]).addTo(map).bindPopup('<b><%= object.name %></b>').openPopup();
+    // Ждём полной загрузки страницы и библиотеки Leaflet
+    document.addEventListener('DOMContentLoaded', function() {
+        // Небольшая задержка для гарантии загрузки Leaflet
+        setTimeout(function() {
+            try {
+                const lat = <%= object.latitude %>;
+                const lng = <%= object.longitude %>;
+                
+                const map = L.map('objectMap').setView([lat, lng], 16);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+                }).addTo(map);
+                
+                L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup('<b><%= object.name %></b>')
+                    .openPopup();
+                
+                console.log('Карта загружена для объекта: <%= object.name %>');
+            } catch(e) {
+                console.error('Ошибка загрузки карты:', e);
+            }
+        }, 100);
+    });
 </script>
 
 <%- include('partials/footer') %>
