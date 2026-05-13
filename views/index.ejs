@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+    <div class="container">
+        <h1>Строим дом вашей мечты</h1>
+        <p class="lead">Частные дома в Барнауле и Алтайском крае под ключ</p>
+        <div class="stats">
+            <div class="stat-item"><span class="stat-number"><%= stats.planning %></span> проектов планируется</div>
+            <div class="stat-item"><span class="stat-number"><%= stats.building %></span> дома строится</div>
+            <div class="stat-item"><span class="stat-number"><%= stats.completed %></span> домов сдано</div>
+            <div class="stat-item"><span class="stat-number"><%= stats.total %></span> всего объектов</div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="map-card">
+        <div class="map-header">
+            <span>📍 Наши объекты на карте Барнаула</span>
+        </div>
+        <div id="map" style="height: 500px;"></div>
+    </div>
+
+    <div class="filter-section" id="objects">
+        <select id="statusFilter" class="filter-select">
+            <option value="all">Все объекты</option>
+            <option value="planning">📋 Проектируются</option>
+            <option value="building">🏗️ Строятся</option>
+            <option value="completed">✅ Сданы</option>
+        </select>
+    </div>
+
+    <div class="objects-grid" id="objectsGrid">
+        <div class="object-card" style="text-align: center; padding: 3rem;">
+            <div>Загрузка...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const mapCenter = { lat: 53.354, lng: 83.745 };
+    const mapZoom = 11;
+</script>
+
+<%- include('partials/footer') %>

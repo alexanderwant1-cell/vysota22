@@ -1,0 +1,67 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <div style="margin: 2rem 0;">
+        <a href="/" style="color: var(--accent); text-decoration: none;">← Назад к списку</a>
+    </div>
+    
+    <div class="object-detail">
+        <div class="card">
+            <div class="card-image" style="height: 400px; width: 100%;">
+                <img src="/uploads/<%= object.preview_image || 'default.jpg' %>" alt="<%= object.name %>" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="card-body">
+                <h1><%= object.name %></h1>
+                <div style="display: flex; gap: 0.5rem; margin: 1rem 0;">
+                    <span class="status-badge status-<%= object.status %>">
+                        <%= statusInfo.text %>
+                    </span>
+                </div>
+                <p style="color: var(--text-secondary); line-height: 1.6;"><%= object.description || 'Уютный частный дом в Барнауле. Индивидуальный проект, качественные материалы, полная отделка под ключ.' %></p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">📋 Характеристики дома</div>
+            <div class="card-body">
+                <div style="margin-bottom: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem;">📍 Адрес</div>
+                    <div><%= object.address %></div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem;">🏠 Площадь дома</div>
+                    <div><%= object.floors ? object.floors + ' м²' : '—' %></div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem;">🧱 Материал стен</div>
+                    <div><%= object.material || '—' %></div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem;">📅 Планируемая сдача</div>
+                    <div><%= object.completion_date ? new Date(object.completion_date).toLocaleDateString('ru-RU') : 'Не указана' %></div>
+                </div>
+                <% if (object.price_from) { %>
+                <div style="margin-bottom: 1rem;">
+                    <div style="color: var(--text-secondary); font-size: 0.85rem;">💰 Стоимость</div>
+                    <div style="font-size: 1.5rem; color: var(--accent);"><%= object.price_from.toLocaleString('ru-RU') %> ₽</div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+    <div class="map-card">
+        <div class="map-header">🗺️ Расположение на карте Барнаула</div>
+        <div id="objectMap" style="height: 400px;"></div>
+    </div>
+</div>
+
+<script>
+    const map = L.map('objectMap').setView([<%= object.latitude %>, <%= object.longitude %>], 15);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+    }).addTo(map);
+    L.marker([<%= object.latitude %>, <%= object.longitude %>]).addTo(map).bindPopup('<b><%= object.name %></b>').openPopup();
+</script>
+
+<%- include('partials/footer') %>

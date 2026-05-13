@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+<div class="container" style="padding: 2rem 0;">
+    <h1 style="text-align: center; margin-bottom: 2rem;">📞 Контакты</h1>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div class="card">
+            <div class="card-header">🏢 Офис продаж</div>
+            <div class="card-body">
+                <p><strong>Адрес:</strong><br>г. Барнаул, Взлётная ул., 109</p>
+                <p><strong>Телефон:</strong><br>+7 (3852) 53-30-35</p>
+                <p><strong>Email:</strong><br>info@vysota22.ru</p>
+                <p><strong>Часы работы:</strong><br>Пн-Пт: 9:00 - 20:00<br>Сб: 10:00 - 18:00<br>Вс: Выходной</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">📱 Социальные сети</div>
+            <div class="card-body">
+                <p><a href="https://t.me/XTwblliRCZcxNjIy" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; display: block; margin-bottom: 1rem;">📘 Telegram</a></p>
+                <p><a href="https://instagram.com/vysotabarnaul22?igshid=MzRlODBiNWFlZA==" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; display: block; margin-bottom: 1rem;">📸 Instagram</a></p>
+                <p><a href="https://wa.me/79646033035" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; display: block; margin-bottom: 1rem;">📱 WhatsApp</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="map-card" style="margin-top: 2rem;">
+        <div class="map-header">🗺️ Схема проезда</div>
+        <div id="officeMap" style="height: 400px; width: 100%;"></div>
+    </div>
+    
+    <div class="card" style="margin-top: 2rem;">
+        <div class="card-header">✉️ Напишите нам</div>
+        <div class="card-body">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label class="form-label">Ваше имя</label>
+                    <input type="text" id="contactName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="contactEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Сообщение</label>
+                    <textarea id="contactMessage" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="sendBtn">Отправить</button>
+            </form>
+            <div id="formMessage" style="margin-top: 1rem;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Карта
+    document.addEventListener('DOMContentLoaded', function() {
+        var mapContainer = document.getElementById('officeMap');
+        if (mapContainer) {
+            var officeLat = 53.340894;
+            var officeLng = 83.646727;
+            
+            var officeMap = L.map('officeMap').setView([officeLat, officeLng], 17);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+            }).addTo(officeMap);
+            
+            L.marker([officeLat, officeLng])
+                .addTo(officeMap)
+                .bindPopup('<b>🏢 ООО "Высота22"</b><br>г. Барнаул, Взлётная ул., 109')
+                .openPopup();
+        }
+        
+        // Отправка формы
+        const form = document.getElementById('contactForm');
+        const sendBtn = document.getElementById('sendBtn');
+        const formMessage = document.getElementById('formMessage');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Отправка...';
+            formMessage.innerHTML = '<div style="color: var(--accent);">⏳ Отправка...</div>';
+            
+            try {
+                const response = await fetch('/send-message', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, message })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    formMessage.innerHTML = '<div style="color: #4caf50;">✅ Сообщение отправлено! Мы свяжемся с вами.</div>';
+                    form.reset();
+                } else {
+                    formMessage.innerHTML = '<div style="color: #dc2626;">❌ Ошибка отправки. Попробуйте позже.</div>';
+                }
+            } catch (error) {
+                formMessage.innerHTML = '<div style="color: #dc2626;">❌ Ошибка соединения.</div>';
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Отправить';
+                setTimeout(() => {
+                    formMessage.innerHTML = '';
+                }, 5000);
+            }
+        });
+    });
+</script>
+
+<%- include('partials/footer') %>

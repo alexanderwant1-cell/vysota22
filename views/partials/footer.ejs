@@ -1,0 +1,30 @@
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>© 2024 ООО «Высота22» — Строительство частных домов в Барнауле</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Дипломный проект</p>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        const btn = document.querySelector('.theme-toggle');
+        btn.textContent = newTheme === 'light' ? '🌙 Тёмная' : '☀️ Светлая';
+    }
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const btn = document.querySelector('.theme-toggle');
+    if (btn) btn.textContent = savedTheme === 'light' ? '🌙 Тёмная' : '☀️ Светлая';
+</script>
+<script src="/js/main.js"></script>
+</body>
+</html>

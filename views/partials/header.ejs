@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container">
+        <a href="/" class="logo">🏠 Высота22</a>
+        <div class="nav-links">
+            <a href="/">Главная</a>
+            <a href="/#objects">Объекты</a>
+            <a href="/contacts">Контакты</a>
+            <a href="/help">Справка</a>
+            <% if (isAuthenticated) { %>
+                <a href="/admin/dashboard">Админка</a>
+                <a href="/admin/logout">Выйти</a>
+            <% } else { %>
+                <a href="/admin/login">Вход</a>
+            <% } %>
+            <button class="theme-toggle" onclick="toggleTheme()">🌙 Тёмная</button>
+        </div>
+    </div>
+</nav>
+
+<main>

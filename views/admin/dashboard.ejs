@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="container" style="padding: 2rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 500;">📊 Панель управления</h2>
+        <div style="display: flex; gap: 1rem;">
+            <a href="/admin/messages" style="background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">✉️ Сообщения</a>
+            <a href="/admin/add" style="background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none;">➕ Добавить дом</a>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">
+            <span>Список объектов строительства</span>
+        </div>
+        <div class="card-body" style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Адрес</th>
+                        <th>Статус</th>
+                        <th>Стоимость</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% objects.forEach(obj => { %>
+                    <tr>
+                        <td><%= obj.id %></td>
+                        <td><%= obj.name %></td>
+                        <td><%= obj.address.substring(0, 40) %>...</td>
+                        <td>
+                            <% if (obj.status === 'planning') { %>
+                                <span class="status-badge status-planning">📋 Проектируется</span>
+                            <% } else if (obj.status === 'building') { %>
+                                <span class="status-badge status-building">🏗️ Строится</span>
+                            <% } else { %>
+                                <span class="status-badge status-completed">✅ Сдан</span>
+                            <% } %>
+                        </td>
+                        <td><%= obj.price_from ? obj.price_from.toLocaleString('ru-RU') + ' ₽' : '—' %></td>
+                        <td>
+                            <a href="/admin/edit/<%= obj.id %>" class="btn-sm btn-warning" style="background: #f59e0b; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; display: inline-block; margin-right: 0.3rem;">✏️</a>
+                            <a href="/admin/delete/<%= obj.id %>" class="btn-sm btn-danger" style="background: #dc2626; color: white; padding: 0.3rem 0.6rem; border-radius: 6px; text-decoration: none; display: inline-block;" onclick="return confirm('Удалить объект?')">🗑️</a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div style="margin-top: 1rem; text-align: center; color: var(--text-secondary); font-size: 0.8rem;">
+        <a href="/" style="color: var(--accent);">← Вернуться на главную</a>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

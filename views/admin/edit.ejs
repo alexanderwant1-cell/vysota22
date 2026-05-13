@@ -1,0 +1,89 @@
+<%- include('../partials/header') %>
+
+<div class="container" style="padding: 2rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 500;">✏️ Редактирование: <%= object.name %></h2>
+        <a href="/admin/dashboard" style="color: var(--text-secondary); text-decoration: none;">← Назад</a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <% if (error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+            
+            <form method="POST" enctype="multipart/form-data">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Название дома *</label>
+                        <input type="text" name="name" class="form-control" value="<%= object.name %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Статус *</label>
+                        <select name="status" class="form-select" required>
+                            <option value="planning" <%= object.status === 'planning' ? 'selected' : '' %>>📋 Проектируется</option>
+                            <option value="building" <%= object.status === 'building' ? 'selected' : '' %>>🏗️ Строится</option>
+                            <option value="completed" <%= object.status === 'completed' ? 'selected' : '' %>>✅ Сдан</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Адрес *</label>
+                        <input type="text" name="address" class="form-control" value="<%= object.address %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Широта *</label>
+                        <input type="number" step="any" name="latitude" class="form-control" value="<%= object.latitude %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Долгота *</label>
+                        <input type="number" step="any" name="longitude" class="form-control" value="<%= object.longitude %>" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Площадь дома (м²)</label>
+                        <input type="number" name="floors" class="form-control" value="<%= object.floors || '' %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Материал стен</label>
+                        <input type="text" name="material" class="form-control" value="<%= object.material || '' %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Стоимость (₽)</label>
+                        <input type="number" name="price_from" class="form-control" value="<%= object.price_from || '' %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата сдачи</label>
+                        <input type="date" name="completion_date" class="form-control" value="<%= object.completion_date ? new Date(object.completion_date).toISOString().split('T')[0] : '' %>">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Новое фото</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <% if (object.preview_image && object.preview_image !== 'default.jpg') { %>
+                            <small style="color: var(--text-secondary);">Текущее: <%= object.preview_image %></small>
+                        <% } %>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Описание</label>
+                        <textarea name="description" class="form-control" rows="5"><%= object.description || '' %></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                    <a href="/admin/dashboard" class="btn btn-outline">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,88 @@
+<%- include('../partials/header') %>
+
+<div class="container" style="padding: 2rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 500;">➕ Добавление дома</h2>
+        <a href="/admin/dashboard" style="color: var(--accent); text-decoration: none;">← Назад к списку</a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <% if (error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+            
+            <form method="POST" enctype="multipart/form-data">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Название дома *</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Статус *</label>
+                        <select name="status" class="form-select" required>
+                            <option value="planning">📋 Проектируется</option>
+                            <option value="building">🏗️ Строится</option>
+                            <option value="completed">✅ Сдан</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Адрес *</label>
+                        <input type="text" name="address" class="form-control" placeholder="г. Барнаул, ул. ..., д. ..." required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Широта *</label>
+                        <input type="number" step="any" name="latitude" class="form-control" placeholder="53.354" required>
+                        <small style="color: var(--text-secondary);">Пример: 53.354 (центр Барнаула)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Долгота *</label>
+                        <input type="number" step="any" name="longitude" class="form-control" placeholder="83.745" required>
+                        <small style="color: var(--text-secondary);">Пример: 83.745 (центр Барнаула)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Площадь дома (м²)</label>
+                        <input type="number" name="floors" class="form-control" placeholder="150">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Материал стен</label>
+                        <input type="text" name="material" class="form-control" placeholder="Газобетон, кирпич, дерево...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Стоимость (₽)</label>
+                        <input type="number" name="price_from" class="form-control" placeholder="4500000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата сдачи</label>
+                        <input type="date" name="completion_date" class="form-control">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Фото дома</label>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Описание</label>
+                        <textarea name="description" class="form-control" rows="5" placeholder="Подробное описание дома, преимущества, инфраструктура района..."></textarea>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                    <a href="/admin/dashboard" class="btn btn-outline">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
