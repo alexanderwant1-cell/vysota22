@@ -2,21 +2,55 @@
 <html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title><%= title %></title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Стили для мобильного меню */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem 0;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .navbar .container {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <nav class="navbar">
     <div class="container">
         <a href="/" class="logo">🏠 Высота22</a>
+        <button class="mobile-menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
         <div class="nav-links">
             <a href="/">Главная</a>
             <a href="/#objects">Объекты</a>
             <a href="/contacts">Контакты</a>
-            <a href="/help">Справка</a>
+            <a href="/help">📚 Справка</a>
             <% if (isAuthenticated) { %>
                 <a href="/admin/dashboard">Админка</a>
                 <a href="/admin/logout">Выйти</a>
